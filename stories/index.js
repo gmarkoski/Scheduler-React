@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
@@ -16,10 +16,24 @@ import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import Confirm from "components/Appointment/Confirm";
 import Status from "components/Appointment/Status";
-import propTypes from "prop-types";
 import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
 
+// function EmptyTest(props) {
+//   return (
+
+//     <main className="appointment__add">
+//        <img
+//         className="appointment__add-button"
+//         src="images/add.png"
+//         alt="Add"
+//         onClick={props.onAdd}
+      
+//       />
+//     </main>
+
+//   );
+// }
 
 
 
@@ -162,14 +176,14 @@ storiesOf("Appointment", module)
   .add('Empty', () => <Empty onAdd={action('onAdd')} />)
   .add('Show', () => (
     <Show
-      student="Lydia Miller-Jones"
-      interviewer={interviewers[0]}
-      onEdit={action('onEdit')}
-      onDelete={action('onDelete')}
+    student="Lydia Miller-Jones"
+    interviewer={interviewers[0]}
+    onEdit={action('onEdit')}
+    onDelete={action('onDelete')}
     />
-  ))
-  .add('Confirm', () => (
-    <Confirm
+    ))
+    .add('Confirm', () => (
+      <Confirm
       message="Delete the appointment?"
       onConfirm={action('onConfirm')}
       onCancel={action('onCancel')}
@@ -196,6 +210,13 @@ storiesOf("Appointment", module)
       
     />
   ))  
+
+  .add("Appointment Empty", () => (
+    <Fragment>
+      <Appointment id={1} time="4pm" />
+      <Appointment time="5pm" />
+    </Fragment>
+  ))
   
   
     
