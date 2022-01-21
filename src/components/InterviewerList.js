@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import InterviewerListItem from 'components/InterviewerListItem';
 import PropTypes from 'prop-types';
 import 'components/InterviewerList.scss';
 
 
-// Set prop types
+
 InterviewerList.propTypes = {
   interviewer: PropTypes.number,
-  setInterviewer: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired
 };
 
 export default function InterviewerList(props) {
@@ -18,13 +18,13 @@ export default function InterviewerList(props) {
 
   let interviewers = props.interviewers.map(interviewer => {
     return (
-      <InterviewerListItem 
-  key={interviewer.id}
-  name={interviewer.name}
-  avatar={interviewer.avatar}
-  selected={interviewer.id === value}
-  setInterviewer={() => onChange(interviewer.id)}    
-/>
+      <InterviewerListItem
+        key={interviewer.id}
+        name={interviewer.name}
+        avatar={interviewer.avatar}
+        selected={interviewer.id === value}
+        setInterviewer={() => props.setInterviewer(interviewer.id)}
+      />
     );
   });
   return (
