@@ -19,24 +19,6 @@ import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
 
-// function EmptyTest(props) {
-//   return (
-
-//     <main className="appointment__add">
-//        <img
-//         className="appointment__add-button"
-//         src="images/add.png"
-//         alt="Add"
-//         onClick={props.onAdd}
-      
-//       />
-//     </main>
-
-//   );
-// }
-
-
-
 
 //----Stories for Button----//
 storiesOf("Button", module)
