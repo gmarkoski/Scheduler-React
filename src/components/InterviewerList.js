@@ -12,6 +12,7 @@ InterviewerList.propTypes = {
 
 export default function InterviewerList(props) {
   const [value, setValue] = useState(props.value);
+  // eslint-disable-next-line
   const onChange = (id) => {
     setValue(id);
   }
