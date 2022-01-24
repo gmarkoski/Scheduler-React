@@ -11,11 +11,11 @@ InterviewerList.propTypes = {
 };
 
 export default function InterviewerList(props) {
-  const [value, setValue] = useState(props.value);
+  //const [value, setValue] = useState(props.value);
   // eslint-disable-next-line
-  const onChange = (id) => {
-    setValue(id);
-  }
+  // const onChange = (id) => {
+  //   setValue(id);
+  // }
 
   let interviewers = props.interviewers.map(interviewer => {
     return (
@@ -23,7 +23,7 @@ export default function InterviewerList(props) {
         key={interviewer.id}
         name={interviewer.name}
         avatar={interviewer.avatar}
-        selected={interviewer.id === value}
+        selected={interviewer.id === props.value}
         setInterviewer={() => props.setInterviewer(interviewer.id)}
       />
     );
