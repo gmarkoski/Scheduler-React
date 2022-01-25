@@ -36,7 +36,6 @@ export default function Application(props) {
 
     return axios.put(`/api/appointments/${id}`, appointment) // send the new appointment info to the server
       .then((res) => {
-        console.log("State update check ", state);
         setState({
           ...state,
           appointments
@@ -60,8 +59,11 @@ export default function Application(props) {
 
     return axios
       .delete(`/api/appointments/${id}`) // send the delete id request to the server
-      .then(() => {
+      .then((res) => {
         setState({ ...state, appointments });
+      })
+      .catch((err) => {
+        console.log("Error message: ", err)
       });
   }
 
