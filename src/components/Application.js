@@ -17,7 +17,6 @@ export default function Application(props) {
     appointments: {},
     interviewers: {}
   })
-    
 
   const appointments = getAppointmentsForDay(state, state.day);
   const interviewers = getInterviewersForDay(state, state.day);
@@ -27,18 +26,34 @@ export default function Application(props) {
       ...state.appointments[id],
       interview: { ...interview }
     };
-
+    
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
-
+    
     setState({...state, appointments});
+
+    return axios.put(`/api/appointments/${id}`, appointment) // send the new appointment info to the server
+    .then((res) => {
+      console.log("State update check ", state);
+      setState({
+        ...state,
+        appointments
+      })
+    })
+    .catch((err) => {
+      console.log("Error message: ", err)
+    })
   }
 
+  
+
+  
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
-
+    console.log(bookInterview);
+    
     return (
       <Appointment
         key={appointment.id}
@@ -53,10 +68,10 @@ export default function Application(props) {
 
  
 
-const setDay = (day) => setState({ ...state, day });
-
-
-useEffect(() => {
+  
+  const setDay = (day) => setState({ ...state, day });
+  
+  useEffect(() => {
 
   const fetchDays = axios.get('/api/days');
   const fetchAppointments = axios.get('/api/appointments');
@@ -75,6 +90,7 @@ useEffect(() => {
         appointments: response[1].data,
         interviewers: response[2].data
       }));
+      
     });
 }, []);
 
@@ -100,8 +116,8 @@ return (
       />
     </section>
     <section className="schedule">
-      {schedule}
-      <Appointment key="last" time="5pm" />
+       {schedule} 
+      <Appointment key="last" time="5pm" /> 
     </section>
   </main>
 );

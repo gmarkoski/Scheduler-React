@@ -1,46 +1,51 @@
 
 
-//**-- GET APPOINTMENTS FOR DAY --**//
+//**-- get appointments for day --**//
 export function getAppointmentsForDay(state, day) {
   const appointments = [];
-  const filteredAppointments = state.days
-    .filter((weekday) => weekday.name === day)
-    .map((d) => d.appointments)
-    .flat();
-
-    if (!filteredAppointments) {
+  const foundDay = state.days
+  .find((weekday) => weekday.name === day)
+  
+    if (!foundDay) {
     return [];
   }
   
-  filteredAppointments.forEach((appointment) => {
+  foundDay.appointments.forEach((appointment) => {
     const matchedAppointment = state.appointments[appointment]; // { id: 4, time: "3pm", interview: null } | undefined
     if (matchedAppointment) {
       appointments.push(matchedAppointment);
+      console.log(appointment)
     }
   });
 
   return appointments;
 }
 
-/////----- GET INTERVIEW -----/////
+/////****get interview****/////
 export function getInterview(state, interview) {
   if (!interview) {
     return null;
+    
   }
-  let interviewer = state.interviewers[interview.interviewer]; // state is current state, then we access the interviewers object, then we access the interviewer id
-  return { ...interview, interviewer }; // we are creating an object, containing the interview properties (student + interviewer as a number) then after the , we add another key to the object which is the 'interviewer'
+  let interviewer = state.interviewers[interview.interviewer]; 
+  return { ...interview, interviewer }; 
 }
 
-/////-----GET INTERVIEWERS FOR DAY -----/////
+//***---get interviewers for day ---***//
 export function getInterviewersForDay(state, day) {
-  const appointments = state.days
-    .filter((weekday) => weekday.name === day)
-    .map((d) => d.appointments)
-    .flat();
+  
+  
+  const foundDay = state.days
+  .find((weekday) => weekday.name === day)
+  
+    if (!foundDay) {
+      return []
+    };
+
   const interviewers = [];
 
-  appointments.forEach((appointment) => {
-    const matchedInterviewer = state.interviewers[appointment];
+  foundDay.interviewers.forEach((interviewer) => {
+    const matchedInterviewer = state.interviewers[interviewer];
     if (matchedInterviewer) {
       interviewers.push(matchedInterviewer);
     }

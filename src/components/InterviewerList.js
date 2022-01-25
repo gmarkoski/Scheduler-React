@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import InterviewerListItem from 'components/InterviewerListItem';
 import PropTypes from 'prop-types';
 import 'components/InterviewerList.scss';
@@ -11,12 +11,7 @@ InterviewerList.propTypes = {
 };
 
 export default function InterviewerList(props) {
-  //const [value, setValue] = useState(props.value);
-  // eslint-disable-next-line
-  // const onChange = (id) => {
-  //   setValue(id);
-  // }
-
+  
   let interviewers = props.interviewers.map(interviewer => {
     return (
       <InterviewerListItem
