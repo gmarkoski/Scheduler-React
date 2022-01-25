@@ -26,28 +26,28 @@ export default function Application(props) {
       ...state.appointments[id],
       interview: { ...interview }
     };
-    
+
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
-    
-    setState({...state, appointments});
-    
+
+    setState({ ...state, appointments });
+
     return axios.put(`/api/appointments/${id}`, appointment) // send the new appointment info to the server
-    .then((res) => {
-      console.log("State update check ", state);
-      setState({
-        ...state,
-        appointments
+      .then((res) => {
+        console.log("State update check ", state);
+        setState({
+          ...state,
+          appointments
+        })
       })
-    })
-    .catch((err) => {
-      console.log("Error message: ", err)
-    })
+      .catch((err) => {
+        console.log("Error message: ", err)
+      })
   }
 
-  /////----- DELETE -----/////
+  /////----- delete -----/////
   function cancelInterview(id) {
     const appointment = {
       ...state.appointments[id],
@@ -65,11 +65,11 @@ export default function Application(props) {
       });
   }
 
-  
+
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     console.log(bookInterview);
-    
+
     return (
       <Appointment
         key={appointment.id}
@@ -83,59 +83,54 @@ export default function Application(props) {
     );
   });
 
- 
-
-  
   const setDay = (day) => setState({ ...state, day });
-  
+
   useEffect(() => {
 
-  const fetchDays = axios.get('/api/days');
-  const fetchAppointments = axios.get('/api/appointments');
-  const fetchInterviewers = axios.get('/api/interviewers');
+    const fetchDays = axios.get('/api/days');
+    const fetchAppointments = axios.get('/api/appointments');
+    const fetchInterviewers = axios.get('/api/interviewers');
 
-  Promise.all([
-    Promise.resolve(fetchDays),
-    Promise.resolve(fetchAppointments),
-    Promise.resolve(fetchInterviewers)
+    Promise.all([
+      Promise.resolve(fetchDays),
+      Promise.resolve(fetchAppointments),
+      Promise.resolve(fetchInterviewers)
 
-  ])
-    .then((response) => {
-      setState(prev => ({
-        ...prev,
-        days: response[0].data,
-        appointments: response[1].data,
-        interviewers: response[2].data
-      }));
-      
-    });
-}, []);
+    ])
+      .then((response) => {
+        setState(prev => ({
+          ...prev,
+          days: response[0].data,
+          appointments: response[1].data,
+          interviewers: response[2].data
+        }));
 
+      });
+  }, []);
 
-
-
-return (
-  <main className="layout">
-    <section className="sidebar">
-      <img
-        className="sidebar--centered"
-        src="images/logo.png"
-        alt="Interview Scheduler"
-      />
-      <hr className="sidebar__separator sidebar--centered" />
-      <nav className="sidebar__menu">
-        <DayList days={state.days} value={state.day} onChange={setDay} />
-      </nav>
-      <img
-        className="sidebar__lhl sidebar--centered"
-        src="images/lhl.png"
-        alt="Lighthouse Labs"
-      />
-    </section>
-    <section className="schedule">
-       {schedule} 
-      <Appointment key="last" time="5pm" /> 
-    </section>
-  </main>
-);
+  return (
+    <main className="layout">
+      <section className="sidebar">
+        <img
+          className="sidebar--centered"
+          src="images/logo.png"
+          alt="Interview Scheduler"
+        />
+        <hr className="sidebar__separator sidebar--centered" />
+        <nav className="sidebar__menu">
+          <DayList days={state.days} value={state.day} onChange={setDay} />
+        </nav>
+        <img
+          className="sidebar__lhl sidebar--centered"
+          src="images/lhl.png"
+          alt="Lighthouse Labs"
+        />
+      </section>
+      <section className="schedule">
+        {schedule}
+        <Appointment key="last" time="5pm" />
+      </section>
+    </main>
+  );
 }
+
