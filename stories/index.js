@@ -162,13 +162,14 @@ storiesOf("Appointment", module)
     interviewer={interviewers[0]}
     onEdit={action('onEdit')}
     onDelete={action('onDelete')}
+    onCancel={action("onCancel")}
     />
     ))
     .add('Confirm', () => (
       <Confirm
       message="Delete the appointment?"
       onConfirm={action('onConfirm')}
-      onCancel={action('onCancel')}
+      onCancel={action("onCancel")}
     />
   ))
   .add("Status", () => <Status message="Deleting" />) 
@@ -181,14 +182,14 @@ storiesOf("Appointment", module)
       interviewer={interviewers[0].id}
       interviewers={interviewers}
       onSave={action('onSave')}
-      onCancel={action('onCancel')}
+      onCancel={action("onCancel")}
     />
   ))  
   .add("Create", () => (
     <Form
       interviewers={interviewers}
       onSave={action('onSave')}
-      onCancel={action('onCancel')}
+      onCancel={action("onCancel")}
       
     />
   ))  
