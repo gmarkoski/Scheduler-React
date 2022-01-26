@@ -12,22 +12,6 @@ export default function useApplicationData() {
 
   const setDay = (day) => setState((prev) => ({ ...prev, day }));
 
-  function calcSpot(day, days, appointments) {
-    let bookedSpots = 0;
-    let totalSpots = 0;
-    days.forEach(item => {
-      totalSpots++;
-      if (item.name === day) {
-        item.appointments.forEach(j => {
-          if (appointments[j].interview !== null) {
-            bookedSpots++;
-          }
-        });
-      }
-    });
-    return totalSpots - bookedSpots;
-  }
-
   const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
