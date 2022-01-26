@@ -12,9 +12,23 @@ export default function useApplicationData() {
 
   const setDay = (day) => setState((prev) => ({ ...prev, day }));
 
-  const bookInterview = (id, interview) => {
-    setState({ ...state, appointments });
+  function calcSpot(day, days, appointments) {
+    let bookedSpots = 0;
+    let totalSpots = 0;
+    days.forEach(item => {
+      totalSpots++;
+      if (item.name === day) {
+        item.appointments.forEach(j => {
+          if (appointments[j].interview !== null) {
+            bookedSpots++;
+          }
+        });
+      }
+    });
+    return totalSpots - bookedSpots;
+  }
 
+  const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -23,11 +37,17 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
+    
+    setState({ ...state, appointments });
+    
+    const days = copyDayState(state.days, appointments);
+    
     return axios.put(`/api/appointments/${id}`, appointment) // send the new appointment info to the server
       .then((res) => {
         setState({
           ...state,
-          appointments
+          appointments,
+          days
         })
       })
       .catch((err) => {
@@ -46,10 +66,12 @@ export default function useApplicationData() {
       [id]: appointment,
     };
 
+    const days = copyDayState(state.days, appointments);
+
     return axios
       .delete(`/api/appointments/${id}`) // send the delete id request to the server
       .then((res) => {
-        setState({ ...state, appointments });
+        setState({ ...state, appointments, days });
       })
       .catch((err) => {
         console.log("Error message: ", err)
@@ -77,6 +99,25 @@ export default function useApplicationData() {
 
       });
   }, []);
+
+  function updateSpots(day, appointments) {
+    let counter = 0
+    day.appointments.forEach((id) => { 
+      if (appointments[id].interview === null){
+        counter++
+      }
+      
+    })
+   return counter; 
+  }
+
+  function copyDayState(days, appointments) {
+      const dayArray = days.map((day) => {
+        return {...day, spots:updateSpots(day,appointments)};
+      })
+      return dayArray
+  }
+  
   return {
     state,
     setDay,
