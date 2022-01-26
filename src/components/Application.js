@@ -1,72 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "components/Application.scss";
 import DayList from "components/DayList";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../helpers/selectors";
 import Appointment from "components/Appointment";
-import axios from "axios";
-// eslint-disable-next-line
-import useVisualMode from "../hooks/useVisualMode";
+import useApplicationData from "../hooks/useApplicationData";
 
 
-
-
-export default function Application(props) {
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {}
-  })
+export default function Application() {
+  const {
+    state,
+    setDay,
+    bookInterview,
+    cancelInterview
+  } = useApplicationData();
 
   const appointments = getAppointmentsForDay(state, state.day);
   const interviewers = getInterviewersForDay(state, state.day);
-
-  const bookInterview = (id, interview) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-
-    setState({ ...state, appointments });
-
-    return axios.put(`/api/appointments/${id}`, appointment) // send the new appointment info to the server
-      .then((res) => {
-        setState({
-          ...state,
-          appointments
-        })
-      })
-      .catch((err) => {
-        console.log("Error message: ", err)
-      })
-  }
-
-  /////----- delete -----/////
-  function cancelInterview(id) {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null,
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment,
-    };
-
-    return axios
-      .delete(`/api/appointments/${id}`) // send the delete id request to the server
-      .then((res) => {
-        setState({ ...state, appointments });
-      })
-      .catch((err) => {
-        console.log("Error message: ", err)
-      });
-  }
-
 
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
@@ -84,31 +33,6 @@ export default function Application(props) {
       />
     );
   });
-
-  const setDay = (day) => setState({ ...state, day });
-
-  useEffect(() => {
-
-    const fetchDays = axios.get('/api/days');
-    const fetchAppointments = axios.get('/api/appointments');
-    const fetchInterviewers = axios.get('/api/interviewers');
-
-    Promise.all([
-      Promise.resolve(fetchDays),
-      Promise.resolve(fetchAppointments),
-      Promise.resolve(fetchInterviewers)
-
-    ])
-      .then((response) => {
-        setState(prev => ({
-          ...prev,
-          days: response[0].data,
-          appointments: response[1].data,
-          interviewers: response[2].data
-        }));
-
-      });
-  }, []);
 
   return (
     <main className="layout">
