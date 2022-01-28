@@ -21,11 +21,11 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    
+
     setState({ ...state, appointments });
-    
+
     const days = copyDayState(state.days, appointments);
-    
+
     return axios.put(`/api/appointments/${id}`, appointment) // send the new appointment info to the server
       .then((res) => {
         setState({
@@ -86,25 +86,26 @@ export default function useApplicationData() {
 
   function updateSpots(day, appointments) {
     let counter = 0
-    day.appointments.forEach((id) => { 
-      if (appointments[id].interview === null){
+    day.appointments.forEach((id) => {
+      if (appointments[id].interview === null) {
         counter++
       }
-      
+
     })
-   return counter; 
+    return counter;
   }
 
   function copyDayState(days, appointments) {
-      const dayArray = days.map((day) => {
-        return {...day, spots:updateSpots(day,appointments)};
-      })
-      return dayArray
+    const dayArray = days.map((day) => {
+      return { ...day, spots: updateSpots(day, appointments) };
+    })
+    return dayArray
   }
-  
+
   return {
     state,
     setDay,
     bookInterview,
-    cancelInterview }
+    cancelInterview
+  }
 };

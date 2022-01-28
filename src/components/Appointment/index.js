@@ -37,20 +37,20 @@ export default function Appointment(props) {
     if (props.bookInterview) {
       props
         .bookInterview(props.id, interview)
-      .then(() => transition(SHOW))
-      .catch(error => transition(ERROR_SAVE, true));
+        .then(() => transition(SHOW))
+        .catch(error => transition(ERROR_SAVE, true));
       transition(SHOW); // this calls the transition function, with 'SHOW' as the argument
     }
-    
+
   }
 
   /////----- delete -----/////
   function cancel() {
     transition(DELETING, true);
     props
-    .cancelInterview(props.id)
-    .then(() => transition(EMPTY))
-    .catch(error => transition(ERROR_DELETE, true));
+      .cancelInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch(error => transition(ERROR_DELETE, true));
   }
 
   function confirmDelete() {
@@ -72,7 +72,7 @@ export default function Appointment(props) {
           interviewer={props.interview.interviewer}
           interviewers={props.interviewers}
           onDelete={confirmDelete}
-          onEdit= {edit}
+          onEdit={edit}
         />)}
       {mode === CREATE && (
         <Form
@@ -107,7 +107,6 @@ export default function Appointment(props) {
           message="Error, can not delete the appointment."
         />
       )}
-
     </article>
   );
 }
