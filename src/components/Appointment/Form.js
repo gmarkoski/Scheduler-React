@@ -1,55 +1,59 @@
 import React, { useState } from "react";
-import InterviewerList from "components/InterviewerList";
 import Button from "components/Button";
-
+import InterviewerList from "components/InterviewerList";
 
 export default function Form(props) {
-  const [name, setName] = useState(props.student || "");
+  const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
-
   const [error, setError] = useState("");
 
+  function reset() {
+    setStudent("");
+    setInterviewer(null);
+    setError("");
+  }
+
+  function cancel() {
+    reset();
+    props.onCancel();
+  }
+
   function validate() {
-    if (name === "") {
+    if (student === "" && interviewer === null) {
+      // Even though Compass did not ask for this first if + &&, I added it because during my tests I found that leaving both fields empty crashes things.
+      setError(
+        "Student name cannot be blank, and interviewer must be selected"
+      );
+      return;
+    }
+    if (student === "") {
       setError("Student name cannot be blank");
       return;
     }
+    if (interviewer === null) {
+      setError("You must select an interviewer");
+      return;
+    }
 
-    setError("");
-    props.onSave(name, interviewer);
+    setError(""); // this clears the error field
+    props.onSave(student, interviewer);
   }
-
-  const reset = function () {
-    console.log(interviewer)
-    setName('');
-    setError("")
-    setInterviewer(null);
-  };
-
-  const cancel = function () {
-    reset();
-    props.onCancel();
-  };
 
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
-        <form autoComplete="off" onSubmit={event => event.preventDefault()}>
+        <form autoComplete="off" onSubmit={(event) => event.preventDefault()}>
           <input
             className="appointment__create-input text--semi-bold"
-            name="name"
+            name={student}
             type="text"
             placeholder="Enter Student Name"
-            value={name}
-            onChange={event => {
-              setName(event.target.value);
-            }}
+            value={student}
+            onChange={(event) => setStudent(event.target.value)}
             data-testid="student-name-input"
           />
-          <section className="appointment__validation">
-            {error}
-          </section>
         </form>
+        <section className="appointment__validation">{error}</section>
         <InterviewerList
           interviewers={props.interviewers}
           value={interviewer}
