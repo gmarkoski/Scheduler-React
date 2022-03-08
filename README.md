@@ -29,18 +29,10 @@ npm test
 npm run storybook
 ```
 Dependancies 
-<<<<<<< HEAD
-Storybook,
-Cypress,
-React,
-Nodemon,
-Babel,
-Prop-Types
-=======
+
 Storybook
 Cypress
 React
 Nodemon
 Babel
 Prop-Types
->>>>>>> 286420e260327bdabcb8c1c9cf7ec9d69999f7b6
